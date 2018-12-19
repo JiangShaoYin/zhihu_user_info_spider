@@ -105,7 +105,7 @@ ITEM_PIPELINES = {
 # SPLASH_URL = 'http://192.168.99.100:8050'
 
 MONGO_URI = 'localhost'
-MONGO_DATABASE = 'zhihu'
+MONGO_DATABASE = 'zhihu' #mongo里面仓库的名字
 
 # SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
