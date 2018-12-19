@@ -34,5 +34,7 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
+        #update的第1个参数{'url_token': item['url_token']}是查询条件，用item中url_token所对应的value值作为鉴别记录的标识，第2个参数为插入的内容item
+        #设置成True,插入之前先查找，如果查到则update，如果没查到，则执行insert
         self.db[self.collection_name].update({'url_token': item['url_token']}, dict(item), True)
         return item
