@@ -24,7 +24,6 @@ class ZhihuSpider(Spider):
  #   followers_query = 'data[*].answer_count,articles_count,gender,follower_count,is_followed,is_following,badge[?(type=best_answerer)].topics'
 
     def start_requests(self):
-        #轮子哥的起始url
         yield Request(self.user_url.format(user=self.start_user, include=self.user_query), self.parse_user)
         yield Request(self.follows_url.format(user=self.start_user, include=self.follows_query, limit=20, offset=0),
                       self.parse_follows)
@@ -40,7 +39,7 @@ class ZhihuSpider(Spider):
                 item[field] = result.get(field) #
         yield item
 
-        yield Request(   
+        yield Request(
             self.follows_url.format(user=result.get('url_token'), include=self.follows_query, limit=20, offset=0),
             self.parse_follows)
 
@@ -48,16 +47,16 @@ class ZhihuSpider(Spider):
             self.followers_url.format(user=result.get('url_token'), include=self.followers_query, limit=20, offset=0),
             self.parse_followers)
 
-    def parse_follows(self, response): #在解析的页面中，找vczh关注的用户列表
+    def parse_follows(self, response): #在解析的页面中，找vczh关注的用户列表，并解析
         results = json.loads(response.text)
-        print results
-        return
+        # print(results)
+        # return
         if 'data' in results.keys():
-            for result in results.get('data'):
-                yield Request(self.user_url.format(user=result.get('url_token'), include=self.user_query),
+            for result in results.get('data'): #在json字符串中遍历data对应的list中各行值
+                yield Request(self.user_url.format(user=result.get('url_token'), include=self.user_query), #爬取关注列表中的用户信息
                               self.parse_user)
 
-        if 'paging' in results.keys() and results.get('paging').get('is_end') == False:
+        if 'paging' in results.keys() and results.get('paging').get('is_end') == False: #关注列表未到末页，则用parse_follows()解析关注列表的下一页
             next_page = results.get('paging').get('next')
             yield Request(next_page,
                           self.parse_follows)
