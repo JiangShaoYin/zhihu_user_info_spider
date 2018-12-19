@@ -48,9 +48,10 @@ class ZhihuSpider(Spider):
             self.followers_url.format(user=result.get('url_token'), include=self.followers_query, limit=20, offset=0),
             self.parse_followers)
 
-    def parse_follows(self, response):
+    def parse_follows(self, response): #在解析的页面中，找vczh关注的用户列表
         results = json.loads(response.text)
-
+        print results
+        return
         if 'data' in results.keys():
             for result in results.get('data'):
                 yield Request(self.user_url.format(user=result.get('url_token'), include=self.user_query),
