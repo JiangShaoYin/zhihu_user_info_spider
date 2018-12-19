@@ -103,7 +103,6 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
 # SPLASH_URL = 'http://192.168.99.100:8050'
-
 MONGO_URI = 'localhost'
 MONGO_DATABASE = 'zhihu' #mongo里面仓库的名字
 
