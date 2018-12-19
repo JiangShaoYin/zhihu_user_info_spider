@@ -37,7 +37,7 @@ class ZhihuSpider(Spider):
 
         for field in item.fields:      # item.fields是items.py中所有已设定的field的名称，如id，name，avatar_url等
             if field in result.keys(): # result.keys是json对象的key，如id，name，avatar_url等
-                item[field] = result.get(field)
+                item[field] = result.get(field) #
         yield item
 
         yield Request(   
