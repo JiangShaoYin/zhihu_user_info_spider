@@ -7,6 +7,31 @@
 
 from scrapy import Item, Field
 
+class CommentItem(Item):
+    id = Field()
+    author = Field()
+    allow_delete = Field()
+    allow_like = Field()
+    allow_reply = Field()
+    allow_vote = Field()
+    can_collapse = Field()
+    can_recommend = Field()
+    censor_status = Field()
+    child_comment_count = Field()
+    child_comments = Field()
+    collapsed = Field()
+    content = Field()
+    created_time = Field()
+    disliked = Field()
+    featured = Field()
+    is_author = Field()
+    is_delete = Field()
+    resource_type = Field()
+    reviewing = Field()
+    type = Field()
+    url = Field()
+    vote_count = Field()
+    voting = Field()
 
 class UserItem(Item):
     # define the fields for your item here like:
