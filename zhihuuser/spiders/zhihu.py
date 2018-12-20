@@ -9,7 +9,7 @@ class ZhihuSpider(Spider):
     name = "zhihu"
     allowed_domains = ["www.zhihu.com"]
     offset = 0
-    start_user = 'excited-vczh'  # 开始的url
+    start_user = 'su-he-hang'  # 开始的url
 
     # 查询用户信息的url，在format中由参数传入
     user_url = 'https://www.zhihu.com/api/v4/members/{user}?include={include}' #{ }括号内为变量，可以在后面传入
@@ -48,11 +48,10 @@ class ZhihuSpider(Spider):
         # 用parse_answer方法，解析轮子哥第1页的回答
         yield Request(self.answer_url.format(user=result.get('url_token'), include=self.answer_query, limit=20, offset=0),
                       self.parse_answer)
-
-        yield Request(   # 获取user关注的用户，他们的关注者页面，用parse_follows方法解析
+        yield Request(                  # 获取user关注的用户，他们的关注者页面，用parse_follows方法解析
             self.follows_url.format(user=result.get('url_token'), include=self.follows_query, limit=20, offset=0),
             self.parse_follows)
-        yield Request(                 # 获取user的粉丝list页面，用parse_followers方法解析
+        yield Request(                  # 获取user的粉丝list页面，用parse_followers方法解析
             self.followers_url.format(user=result.get('url_token'), include=self.followers_query, limit=20, offset=0),
             self.parse_followers)
 
@@ -72,8 +71,6 @@ class ZhihuSpider(Spider):
             yield Request(self.answer_url.format(user=self.start_user, include=self.answer_query, limit=20, offset=self.offset),
                           self.parse_answer)
 
-
-
     def parse_comment(self, response):  # 针对某一次回答，解析该回答下的所有评论
         results = json.loads(response.text)
         item = CommentItem()  # 创建item对象
@@ -91,11 +88,10 @@ class ZhihuSpider(Spider):
             yield Request(next_page,
                           self.parse_comment)
 
-
-    def parse_follows(self, response): #在解析的页面中，找vczh关注的用户列表，并解析
+    def parse_follows(self, response):  # 在解析的页面中，找user关注的用户列表，并解析
         results = json.loads(response.text)
         if 'data' in results.keys():
-            for result in results.get('data'): #在json字符串中遍历data对应的list中各行值
+            for result in results.get('data'):  # 在json字符串中遍历data对应的list中各行值
                 yield Request(self.user_url.format(user=result.get('url_token'), include=self.user_query), #爬取关注列表中的用户信息
                               self.parse_user)
 
